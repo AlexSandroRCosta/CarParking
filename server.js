@@ -3,22 +3,16 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const helmet = require("helmet");
 const { MongoClient } = require("mongodb");
+const path = require("path");
+require("dotenv").config();
 
 const app = express();
 const port = process.env.PORT || 3000;
-const url =
-  "mongodb+srv://areckrodrigues1978:exSXYYzWsVMtqoMW@carparkingcluster.vx1k2.mongodb.net/?retryWrites=true&w=majority&appName=CarParkingCluster";
+const url = process.env.MONGODB_URI;
 const dbName = "CarParkingCampinas";
-
-const path = require("path");
 
 // Serve arquivos estáticos do frontend
 app.use(express.static(path.join(__dirname, "public")));
-
-// Rota catch-all para servir o index.html
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "public", "index.html"));
-});
 
 app.use(bodyParser.json());
 app.use(cors());
@@ -204,6 +198,11 @@ app.get("/downloadPayments", async (req, res) => {
   } finally {
     await client.close();
   }
+});
+
+// Rota catch-all para servir o index.html
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "index.html"));
 });
 
 app.listen(port, () => {
