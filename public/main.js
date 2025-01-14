@@ -1,5 +1,7 @@
 "use strict";
 
+const API_URL = "https://carparking-1es7.onrender.com";
+
 let isAdmin = false;
 
 const openModalPrice = () => {
@@ -114,7 +116,7 @@ const setDB = (bank) => localStorage.setItem("bank", JSON.stringify(bank));
 
 const getPrices = async () => {
   try {
-    const response = await fetch("http://localhost:3000/getPrices");
+    const response = await fetch(`${API_URL}/getPrices`);
     if (response.ok) {
       const prices = await response.json();
       console.log(prices);
@@ -133,7 +135,7 @@ const updatePrices = async () => {
   const additionalHourlyRate = document.querySelector("#precoAteUmaHora").value;
 
   try {
-    const response = await fetch("http://localhost:3000/updatePrices", {
+    const response = await fetch(`${API_URL}/updatePrices`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -291,7 +293,7 @@ const isValidForm = () =>
 
 const saveClient = async () => {
   // Obtenha os preços do banco de dados
-  const response = await fetch("http://localhost:3000/getPrices");
+  const response = await fetch(`${API_URL}/getPrices`);
   const dbPrice = response.ok ? await response.json() : null;
 
   if (isValidForm()) {
@@ -345,7 +347,7 @@ const savePrice = async () => {
     };
 
     try {
-      const response = await fetch("http://localhost:3000/updatePrices", {
+      const response = await fetch(`${API_URL}/updatePrices`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -478,7 +480,7 @@ const changeStatus = async () => {
     setDB(db);
 
     // Enviar dados para o servidor
-    const response = await fetch("http://localhost:3000/savePayment", {
+    const response = await fetch(`${API_URL}/savePayment`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -529,7 +531,7 @@ const clearTableCustomersWhoPaid = () => {
 
 const updateTableCustomersParagram = async () => {
   try {
-    const response = await fetch("http://localhost:3000/getPayments");
+    const response = await fetch(`${API_URL}/getPayments`);
     if (response.ok) {
       const payments = await response.json();
       clearTableCustomersWhoPaid();
@@ -551,7 +553,7 @@ document
   .getElementById("downloadReport")
   .addEventListener("click", async () => {
     try {
-      const response = await fetch("http://localhost:3000/downloadPayments");
+      const response = await fetch(`${API_URL}/downloadPayments`);
       if (response.ok) {
         const payments = await response.json();
         const blob = new Blob([JSON.stringify(payments, null, 2)], {
@@ -636,7 +638,7 @@ const authenticateUser = async () => {
   console.log(`Authenticating user: ${username}`);
 
   try {
-    const response = await fetch("http://localhost:3000/authenticate", {
+    const response = await fetch(`${API_URL}/authenticate`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -662,7 +664,7 @@ const authenticateUser = async () => {
 
 const loadConvenios = async () => {
   try {
-    const response = await fetch("http://localhost:3000/getConvenios");
+    const response = await fetch(`${API_URL}/getConvenios`);
     if (response.ok) {
       const convenios = await response.json();
       const convenioSelect = document.querySelector("#convenioSelect");
@@ -777,7 +779,7 @@ const confirmConvenio = async () => {
   }
 
   // Obtenha os preços do banco de dados
-  const response = await fetch("http://localhost:3000/getPrices");
+  const response = await fetch(`${API_URL}/getPrices`);
   const dbPrice = response.ok ? await response.json() : null;
 
   if (!dbPrice || !dbPrice.Hora || !dbPrice.HoraExtra) {
